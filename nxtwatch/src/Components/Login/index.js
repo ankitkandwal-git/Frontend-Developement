@@ -1,6 +1,7 @@
 import React from 'react'
 import Cookies from 'js-cookie'
-import { useState,UseNavigate } from 'react'
+import { useState } from 'react'
+import { useNavigate, Navigate } from 'react-router-dom'
 import './index.css'
 
 const Login = () =>{
@@ -8,7 +9,7 @@ const Login = () =>{
     const [password, setPassword] = useState('')
     const [errorMsg, setErrorMsg] = useState('')
     const [showSubmitError, setShowSubmitError] = useState(false)
-    const Navigate = UseNavigate()
+    const navigate = useNavigate()
     const onChangeUsername = event =>{
         setUsername(event.target.value)
     }
@@ -18,14 +19,14 @@ const Login = () =>{
     }
     const onSubmitSuccess = jwtToken =>{
         Cookies.set('jwt_token',jwtToken,{expires:30})
-        Navigate ('/',{replace:true})
+        navigate('/',{replace:true})
     }
     const onChangePassword = event =>{
         setPassword(event.target.value)
     }
     const jwtToken = Cookies.get('jwt_token')
     if(jwtToken !== undefined){
-        return <Navigate to="/" replace/>
+        return <Navigate to="/" replace />
     }
     const onSubmitForm = async event =>{
         event.preventDefault();
@@ -54,9 +55,10 @@ const Login = () =>{
                     <input type="text" id="username" className="input-field" value={username} onChange={(e) => setUsername(e.target.value)}/>
                     <label htmlFor="password" className="input-label" onChange={onChangePassword}>PASSWORD</label>
                     <input type="password" id="password" className="input-field" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <button type="submit" className="login-button">Login</button>
+                    {showSubmitError && <p className="error-msg">{errorMsg}</p>}
                 </form>
-                <button type="submit" className="login-button">Login</button>
-                {showSubmitError && <p className="error-msg">{errorMsg}</p>}
+                
             </div>
         </div>
     )
